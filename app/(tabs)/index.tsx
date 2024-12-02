@@ -1,8 +1,7 @@
-// Archivo: app/(tabs)/index.tsx
-
 import React, { useEffect, useState } from "react";
 import { Button, Text, View, Alert } from "react-native";
 import * as AuthSession from "expo-auth-session";
+import { useNavigation } from '@react-navigation/native';
 
 const clientId = "141567";
 const clientSecret = "398a1d8b2b3d6e327db0aaf9bd788e4acec02b4f";
@@ -10,6 +9,7 @@ const redirectUri = AuthSession.makeRedirectUri({ useProxy: true });
 
 const HomeScreen = () => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const navigation = useNavigation();  // Hook para obtener el objeto de navegación
 
   const [request, response, promptAsync] = AuthSession.useAuthRequest(
     {
@@ -30,13 +30,16 @@ const HomeScreen = () => {
         .then((token) => {
           setAccessToken(token);
           console.log("Autenticación exitosa. Token:", token);
+          
+          // Aquí rediriges a la pantalla inicial o cierras el modal
+          navigation.navigate('/explore');  // Cambia 'Home' por el nombre de tu pantalla inicial
         })
         .catch((error) => {
           console.error("Error en el intercambio del token:", error);
           Alert.alert("Error", "No se pudo completar la autenticación.");
         });
     }
-  }, [response]);
+  }, [response, navigation]);  // Añadir navigation a las dependencias
 
   const exchangeCodeForToken = async (code: string): Promise<string> => {
     try {
@@ -69,7 +72,7 @@ const HomeScreen = () => {
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       {!accessToken ? (
         <Button
-          title="Iniciar sesión con Strava"
+          title="...................."
           onPress={() => {
             console.log("Iniciando autenticación...");
             promptAsync();
