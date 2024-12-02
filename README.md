@@ -1,4 +1,4 @@
-(assets/images/redmeImg.webp)
+![Strava Tracker](assets/images/redmeImg.webp)
 
 # Strava Tracker
 
