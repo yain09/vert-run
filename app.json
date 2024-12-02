@@ -1,21 +1,23 @@
 {
   "expo": {
-    "name": "vert.run",
-    "slug": "vert.run",
+    "name": "vert-run",
+    "slug": "vert-run",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "vert-run",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.vert-run"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.vert-run"
     },
     "web": {
       "bundler": "metro",
