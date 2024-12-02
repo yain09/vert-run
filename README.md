@@ -1,5 +1,6 @@
+(assets/images/redmeImg.webp)
 
-# Strava Tracker (assets/images/redmeImg.webp)
+# Strava Tracker
 
 Strava Tracker es una aplicación móvil desarrollada con **React Native** y **Expo**. Permite a los usuarios autenticarse mediante OAuth para conectarse con la API de Strava, ver sus actividades recientes y consultar estadísticas mensuales agregadas. Este proyecto utiliza herramientas modernas como **Zustand** para la gestión de estado y **React Query** para la obtención y caché de datos.
 
@@ -31,3 +32,4 @@ Strava Tracker es una aplicación móvil desarrollada con **React Native** y **E
    ```bash
    git clone https://github.com/tu-usuario/strava-tracker.git
    cd strava-tracker
+   ```
