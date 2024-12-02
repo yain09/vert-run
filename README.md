@@ -2,34 +2,21 @@
 
 # Strava Tracker
 
-Strava Tracker es una aplicación móvil desarrollada con **React Native** y **Expo**. Permite a los usuarios autenticarse mediante OAuth para conectarse con la API de Strava, ver sus actividades recientes y consultar estadísticas mensuales agregadas. Este proyecto utiliza herramientas modernas como **Zustand** para la gestión de estado y **React Query** para la obtención y caché de datos.
+**Strava Tracker** es una app móvil en desarrollo creada con **React Native** y **Expo** como parte de una prueba técnica. La idea principal es permitir a los usuarios conectarse con su cuenta de Strava, ver sus actividades recientes y consultar estadísticas mensuales.
 
-## Características
+## ¿Qué incluye?
 
-- **Autenticación OAuth**: Los usuarios pueden iniciar sesión con su cuenta de Strava de manera segura.
-- **Deep Linking**: Implementación de enlaces profundos para manejar el redireccionamiento durante el proceso de autenticación.
-- **Pantalla de Actividades**:
-  - Ver una lista de actividades recientes sincronizadas desde Strava.
-  - Información detallada de cada actividad, como nombre, fecha, distancia, tiempo y elevación ganada.
-- **Pantalla de Estadísticas Mensuales**:
-  - Resumen de datos agregados (distancia total, tiempo total, ganancia de elevación) de los últimos tres meses.
-  - Navegación hacia actividades específicas de un mes.
-- **Gestión y optimización de datos**:
-  - **React Query** para la obtención eficiente de datos y su almacenamiento en caché.
-  - **Zustand** para la administración de estado global.
+- **Inicio de sesión con Strava**: Usando OAuth para garantizar una conexión segura.
+- **Actividades recientes**: Listado de las últimas actividades del usuario con detalles como nombre, distancia y tiempo.
+- **Estadísticas mensuales**: Un resumen de los últimos meses con datos totales de distancia, tiempo y elevación.
 
-## Tecnologías Utilizadas
+## Tecnologías
 
-- **Expo**: Framework para desarrollo de aplicaciones móviles.
-- **React Native**: Base del desarrollo móvil.
-- **Zustand**: Biblioteca ligera para gestión de estado.
-- **React Query**: Herramienta para la sincronización de datos con el backend.
-- **Strava API**: Para obtener datos de actividades y estadísticas de usuarios.
+- **Expo**: Para facilitar el desarrollo y la compilación.
+- **React Native**: El núcleo del desarrollo móvil.
+- **Zustand**: Para manejar el estado de la app.
+- **React Query**: Para sincronizar y cachear datos.
 
-## Instalación y Ejecución
+---
 
-1. Clonar este repositorio:
-   ```bash
-   git clone https://github.com/tu-usuario/strava-tracker.git
-   cd strava-tracker
-   ```
+Este proyecto está en progreso, así que algunas características podrían no estar completas. 😊
