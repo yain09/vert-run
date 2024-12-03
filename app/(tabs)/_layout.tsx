@@ -3,20 +3,24 @@
 import React from "react";
 import { View, Switch, StyleSheet, SafeAreaView } from "react-native";
 import { Tabs } from "expo-router";
-import { useTheme } from "../hooks/ThemeContext"; // Usamos useTheme para obtener el tema actual
+import { useTheme } from "../hooks/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
-import { Colors } from "@/constants/Colors"; // Para los colores del tema
-import LogoSVG from "../components/LogoSVG"; // Importa tu componente SVG
+import { Colors } from "@/constants/Colors";
+import LogoSVG from "../components/LogoSVG";
 
 export default function TabLayout() {
   const { theme, toggleTheme } = useTheme();
+
+  // Renderizado
 
   return (
     <>
       <View
         style={[
           styles.headerContainer,
-          { backgroundColor: Colors[theme].background },
+          {
+            backgroundColor: Colors[theme].background,
+          },
         ]}
       >
         <LogoSVG />
@@ -46,9 +50,9 @@ export default function TabLayout() {
               borderTopColor: Colors[theme].cardBackground,
 
               height: 70,
-              paddingTop: 8, // Altura personalizada de las tabs
-              justifyContent: "center", // Alineación del contenido vertical
-              alignItems: "center", // Alineación del contenido horizontal
+              paddingTop: 8,
+              justifyContent: "center",
+              alignItems: "center",
             },
             headerShown: false,
           }}
@@ -58,7 +62,7 @@ export default function TabLayout() {
             name="profile"
             options={{
               title: "Perfil",
-              
+
               tabBarIcon: ({ color, focused }) => (
                 <Ionicons
                   name={focused ? "person" : "person-outline"}
@@ -99,6 +103,8 @@ export default function TabLayout() {
     </>
   );
 }
+
+// Estilos
 
 const styles = StyleSheet.create({
   headerContainer: {

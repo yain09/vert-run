@@ -11,18 +11,22 @@ type CardProps = {
 };
 
 const Card: React.FC<CardProps> = ({ title, content }) => {
-  const { theme } = useTheme(); // Accedemos al tema usando useTheme
+  const { theme } = useTheme(); 
+
+// Renderizado
 
   return (
-    <View style={[styles.card, { backgroundColor: Colors[theme].cardBackground }]}>  {/* Usamos theme.cardBackground para el fondo de las tarjetas */}
-      <Text style={[styles.title, { color: Colors[theme].text }]}>{title}</Text>  {/* Usamos theme.text para el texto */}
+    <View style={[styles.card, { backgroundColor: Colors[theme].cardBackground }]}> 
+      <Text style={[styles.title, { color: Colors[theme].text }]}>{title}</Text>  
       {content.map((line, index) => (
         <Text key={index} style={[styles.text, { color: Colors[theme].text }]}>{line}</Text>  
-        /* Aplicamos el color de texto */
+        
       ))}
     </View>
   );
 };
+
+// Estilos
 
 const styles = StyleSheet.create({
   card: {
@@ -33,7 +37,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 2, // Esto crea la sombra para las tarjetas
+    elevation: 2,
   },
   title: {
     fontSize: 18,

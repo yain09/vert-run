@@ -9,7 +9,7 @@ const mockStats = [
   { id: 3, month: "September", distance: "100 km", time: "5 hrs", elevationGain: "400 m" },
 ];
 
-const MonthlyStatsScreen = () => {
+const MonthlyStats = () => {
   const { theme } = useTheme();
 
   return (
@@ -18,16 +18,18 @@ const MonthlyStatsScreen = () => {
         data={mockStats}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <View style={[styles.card, { backgroundColor: Colors[theme].cardBackground }]}>
+          <View
+            style={[styles.card, { backgroundColor: Colors[theme].cardBackground }]}
+          >
             <Text style={[styles.title, { color: Colors[theme].text }]}>{item.month}</Text>
             <Text style={[styles.text, { color: Colors[theme].text }]}>
-              Total Distance: {item.distance}
+              Distancia total: {item.distance}
             </Text>
             <Text style={[styles.text, { color: Colors[theme].text }]}>
-              Total Time: {item.time}
+              Tiempo total: {item.time}
             </Text>
             <Text style={[styles.text, { color: Colors[theme].text }]}>
-              Total Elevation Gain: {item.elevationGain}
+              Desnivel positivo total: {item.elevationGain}
             </Text>
           </View>
         )}
@@ -36,6 +38,7 @@ const MonthlyStatsScreen = () => {
   );
 };
 
+// Estilos
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -60,4 +63,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MonthlyStatsScreen;
+export default MonthlyStats;

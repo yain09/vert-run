@@ -16,8 +16,8 @@ export const Colors = {
     tabBarActiveTintColor: accentColorLight, // Nombre más claro
     tabBarInactiveTintColor: "#888888", // Nombre más claro
     hover: accentColorLight,
-    cardBackground: "#ddd",
-    sportIcons: "#000000",
+    cardBackground: "#dcd1e6",
+    sportIcons: "#5b4b69",
   },
 
   dark: {

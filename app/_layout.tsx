@@ -3,19 +3,19 @@
 import React from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { ThemeProvider, useTheme } from "./hooks/ThemeContext"; // Asegúrate de importar el ThemeProvider
-import { Colors } from "@/constants/Colors"; // Para manejar los colores según el tema
+import { ThemeProvider, useTheme } from "./hooks/ThemeContext"; 
+import { Colors } from "@/constants/Colors"; 
 
 export default function RootLayout() {
   return (
-    <ThemeProvider> {/* Asegúrate de envolver toda la aplicación con el ThemeProvider */}
+    <ThemeProvider> 
       <ThemeContent />
     </ThemeProvider>
   );
 }
 
 const ThemeContent = () => {
-  const { theme } = useTheme(); // Obtener el tema actual
+  const { theme } = useTheme(); 
 
   return (
     <>
