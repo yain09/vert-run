@@ -4,21 +4,15 @@ import React from "react";
 import { View, Switch, StyleSheet, SafeAreaView } from "react-native";
 import { Tabs } from "expo-router";
 import { useTheme } from "../hooks/ThemeContext"; // Usamos useTheme para obtener el tema actual
-import { IconSymbol } from "@/components/ui/IconSymbol"; // Importa IconSymbol
+import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors"; // Para los colores del tema
 import LogoSVG from "../components/LogoSVG"; // Importa tu componente SVG
 
 export default function TabLayout() {
-  const { theme, toggleTheme } = useTheme(); // Accedemos al tema y la función toggle
-
-  const handleThemeToggle = () => {
-    toggleTheme(); // Cambiar el tema al hacer clic en el Switch
-    console.log("Tema cambiado a:", theme === "dark" ? "light" : "dark");
-  };
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <>
-      {/* Header con el texto dinámico del título de la pantalla y el Switch */}
       <View
         style={[
           styles.headerContainer,
@@ -26,56 +20,77 @@ export default function TabLayout() {
         ]}
       >
         <LogoSVG />
-
         <Switch
           value={theme === "dark"}
-          onValueChange={handleThemeToggle}
+          onValueChange={toggleTheme}
           thumbColor={theme === "dark" ? "#FFFFFF" : "#000000"}
           trackColor={{
-            false: "#B0B0B0", // Color gris cuando está desactivado
-            true: theme === "dark" ? "#B0B0B0" : "#009688", // Color cuando está activado
+            false: "#B0B0B0",
+            true: theme === "dark" ? "#B0B0B0" : "#B0B0B0",
           }}
         />
       </View>
 
-      {/* Cuerpo de la web con fondo dinámico */}
       <SafeAreaView
         style={[
           styles.bodyContainer,
-          { backgroundColor: Colors[theme].backgroundBody },
+          { backgroundColor: Colors[theme].background },
         ]}
       >
         <Tabs
           screenOptions={{
-            tabBarActiveTintColor: Colors[theme].tint,
-            headerShown: false, // No queremos mostrar el header en las Tabs
+            tabBarActiveTintColor: Colors[theme].tabBarActiveTintColor,
+            tabBarInactiveTintColor: Colors[theme].tabBarInactiveTintColor,
+            tabBarStyle: {
+              backgroundColor: Colors[theme].background,
+              borderTopColor: Colors[theme].cardBackground,
+
+              height: 70,
+              paddingTop: 8, // Altura personalizada de las tabs
+              justifyContent: "center", // Alineación del contenido vertical
+              alignItems: "center", // Alineación del contenido horizontal
+            },
+            headerShown: false,
           }}
         >
+          {" "}
+          <Tabs.Screen
+            name="profile"
+            options={{
+              title: "Perfil",
+              
+              tabBarIcon: ({ color, focused }) => (
+                <Ionicons
+                  name={focused ? "person" : "person-outline"}
+                  size={30}
+                  color={color}
+                />
+              ),
+            }}
+          />
           <Tabs.Screen
             name="activities"
             options={{
-              tabBarIcon: ({ color }) => (
-                <IconSymbol size={24} name="bicycle" color={color} />
+              title: "Actividades",
+              tabBarIcon: ({ color, focused }) => (
+                <Ionicons
+                  name={focused ? "flash" : "flash-outline"}
+                  size={30}
+                  color={color}
+                />
               ),
-              tabBarOnPress: () => setHeaderText("Activities"),
             }}
           />
           <Tabs.Screen
             name="monthly-stats"
             options={{
-              tabBarIcon: ({ color }) => (
-                <IconSymbol size={24} name="chart.bar" color={color} />
-              ),
-              tabBarOnPress: () => setHeaderText("Monthly Stats"),
-            }}
-          />
-          {/* Nueva pestaña para el perfil */}
-          <Tabs.Screen
-            name="profile"
-            options={{
-              title: "Perfil",
-              tabBarIcon: ({ color }) => (
-                <IconSymbol size={24} name="person" color={color} />
+              title: "Estadísticas",
+              tabBarIcon: ({ color, focused }) => (
+                <Ionicons
+                  name={focused ? "clipboard" : "clipboard-outline"}
+                  size={30}
+                  color={color}
+                />
               ),
             }}
           />
@@ -90,16 +105,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 10,
+    paddingHorizontal: 20,
+    paddingTop: 35,
+    paddingBottom: 10,
     width: "100%",
-   
-  },
-  headerText: {
-    fontSize: 18,
-    fontWeight: "bold",
   },
   bodyContainer: {
     flex: 1,
-    padding: 10,
+    overflow: "hidden",
   },
 });

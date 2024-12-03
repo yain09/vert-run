@@ -1,14 +1,19 @@
-// app/hooks/ThemeContext.tsx
+// Archivo: app/hooks/ThemeContext.tsx
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode } from 'react';
 
-const ThemeContext = createContext(null);
+type ThemeContextType = {
+  theme: 'light' | 'dark';
+  toggleTheme: () => void; // Definir toggleTheme como función
+};
+
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<'light' | 'dark'>('light'); // Valor inicial es 'light'
 
   const toggleTheme = () => {
-    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
+    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
   };
 
   return (
@@ -18,12 +23,11 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+// Custom hook para usar el contexto
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (!context) {
-    throw new Error("useTheme must be used within a ThemeProvider");
+    throw new Error('useTheme must be used within a ThemeProvider');
   }
   return context;
 };
-
-export default ThemeContext;

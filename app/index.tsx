@@ -1,22 +1,18 @@
-// Archivo: app/index.tsx
-
 import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
-  Button,
   Alert,
   ActivityIndicator,
   StyleSheet,
-  Image,
+  Pressable,
 } from "react-native";
 import { useTheme } from "./hooks/ThemeContext";
 import { Colors } from "@/constants/Colors";
 import * as AuthSession from "expo-auth-session";
-import { Link } from "expo-router";
-
-import { useNavigation } from "@react-navigation/native";
+import { useRouter, useNavigation } from "expo-router";
 import LogoSVG from "./components/LogoSVG";
+import BgSVG from "./components/BgSVG"; // Importa el SVG como fondo
 
 const clientId = "141567";
 const clientSecret = "398a1d8b2b3d6e327db0aaf9bd788e4acec02b4f";
@@ -26,12 +22,13 @@ export default function index() {
   const [isLoading, setIsLoading] = useState(false);
   const { theme } = useTheme();
   const navigation = useNavigation();
+  const router = useRouter();
 
   const handleMockLogin = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      navigation.replace("/(tabs)/profile");
+      router.push({ pathname: "/(tabs)/profile" });
     }, 2000);
   };
 
@@ -50,22 +47,17 @@ export default function index() {
   useEffect(() => {
     if (response?.type === "success") {
       const code = response.params.code;
-      console.log("Código recibido:", code);
-
       exchangeCodeForToken(code)
         .then((token) => {
           setAccessToken(token);
-          console.log("Autenticación exitosa. Token:", token);
-
-          // Aquí rediriges a la pantalla inicial o cierras el modal
           navigation.replace("/(tabs)/profile");
         })
         .catch((error) => {
-          console.error("Error en el intercambio del token:", error);
+          console.error("Error al autenticar:", error);
           Alert.alert("Error", "No se pudo completar la autenticación.");
         });
     }
-  }, [response, navigation]); // Añadir navigation a las dependencias
+  }, [response]);
 
   const exchangeCodeForToken = async (code: string): Promise<string> => {
     try {
@@ -94,45 +86,43 @@ export default function index() {
     }
   };
 
-  const handleRealLogin = () => {
-    // Aquí irá tu lógica de login real con Strava
-    console.log("Iniciando autenticación real...");
-  };
-
   return (
     <View
       style={[styles.container, { backgroundColor: Colors[theme].background }]}
     >
+      <BgSVG style={styles.bg} />
       <View style={styles.logoContainer}>
-        <LogoSVG />
+        <LogoSVG size={200} />
       </View>
 
       <Text style={[styles.title, { color: Colors[theme].text }]}>
         ¡Bienvenido a VertRun!
       </Text>
-      <Text style={[styles.subtitle, { color: Colors[theme].text }]}>
-        Elige cómo iniciar sesión
-      </Text>
-
       {isLoading ? (
         <ActivityIndicator size="large" color={Colors[theme].tint} />
       ) : (
         <View style={styles.buttonContainer}>
-          <Link href="/(tabs)/profile">
-            <Button title="Log In (Mock)" onPress={handleMockLogin} />
-          </Link>
+          <Text style={[styles.subtitle, { color: Colors[theme].text }]}>
+            Elige cómo iniciar sesión
+          </Text>
+          <Pressable
+            style={[styles.button, { backgroundColor: Colors[theme].primary }]}
+            onPress={handleMockLogin}
+          >
+            <Text style={styles.buttonText}>LOG IN MOCKUP</Text>
+          </Pressable>
           <Text style={[styles.smallText, { color: Colors[theme].text }]}>
             Para pruebas
           </Text>
-          <Button
-            title="Log In con Strava"
+          <Pressable
+            style={[styles.button, { backgroundColor: Colors[theme].primary }]}
             onPress={() => {
               console.log("Iniciando autenticación...");
               promptAsync();
             }}
-          />
-
-          {/* <Button title="Log In con Strava" onPress={handleRealLogin} /> */}
+          >
+            <Text style={styles.buttonText}>LOG IN STRAVA</Text>
+          </Pressable>
           <Text style={[styles.smallText, { color: Colors[theme].text }]}>
             Autenticación oficial
           </Text>
@@ -143,6 +133,11 @@ export default function index() {
 }
 
 const styles = StyleSheet.create({
+  bg: {
+  objectFit: "cover",
+    padding: 0,
+    margin: 0,
+  },
   container: {
     flex: 1,
     justifyContent: "center",
@@ -166,9 +161,21 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
   },
+  button: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginBottom: 10,
+    backgroundColor: "black",
+  },
+  buttonText: {
+    fontSize: 16,
+    color: "#fff",
+    textAlign: "center",
+  },
   smallText: {
     fontSize: 12,
-    marginTop: 5,
-    marginBottom: 15,
+    marginTop: 0,
+    marginBottom: 32,
   },
 });

@@ -3,7 +3,8 @@ import React from "react";
 import Svg, { Path, Polygon } from "react-native-svg";
 import { useTheme } from "../hooks/ThemeContext"; // Usamos el hook para obtener el tema actual
 
-const LogoSVG = () => {
+// Componente de íconos dinámicos, recibe el tamaño del ícono como prop
+const LogoSVG = ({ size = 70 }: { size?: number }) => {
   const { theme } = useTheme(); // Obtener el tema actual (dark o light)
   const fillColor = theme === "dark" ? "#FFFFFF" : "#000000"; // Define el color de relleno dependiendo del tema
 
@@ -11,8 +12,8 @@ const LogoSVG = () => {
     <Svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 3042.7 1322.9"
-      width={70}
-      height={50}
+      width={size}
+      height={size*0.5}
     >
       <Polygon
         fill={fillColor}

@@ -1,5 +1,3 @@
-// Archivo: app/(tabs)/profile.tsx
-
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Colors } from "@/constants/Colors"; // Para los colores del tema
@@ -11,12 +9,36 @@ const ProfileScreen = () => {
   const { firstname, lastname, weight, city, state } = athletesData; // Desestructuramos la info de "athletes.json"
 
   return (
-    <View style={[styles.container, { backgroundColor: Colors[theme].backgroundBody }]}>
-      <Text style={[styles.title, { color: Colors[theme].text }]}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: Colors[theme].background }, // Usa el color de fondo del tema
+      ]}
+    >
+      <Text
+        style={[
+          styles.title,
+          { color: Colors[theme].text }, // Usa el color del texto del tema
+        ]}
+      >
         Perfil de {firstname} {lastname}
       </Text>
-      <Text style={[styles.text, { color: Colors[theme].text }]}>Ciudad: {city}, {state}</Text>
-      <Text style={[styles.text, { color: Colors[theme].text }]}>Peso: {weight} kg</Text>
+      <Text
+        style={[
+          styles.text,
+          { color: Colors[theme].text }, // Usa el color del texto del tema
+        ]}
+      >
+        Ciudad: {city}, {state}
+      </Text>
+      <Text
+        style={[
+          styles.text,
+          { color: Colors[theme].text }, // Usa el color del texto del tema
+        ]}
+      >
+        Peso: {weight} kg
+      </Text>
     </View>
   );
 };
