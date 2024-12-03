@@ -1,88 +1,62 @@
-import React, { useEffect, useState } from "react";
-import { Button, Text, View, Alert } from "react-native";
-import * as AuthSession from "expo-auth-session";
-import { useNavigation } from '@react-navigation/native';
+// Archivo: app/index.tsx
 
-const clientId = "141567";
-const clientSecret = "398a1d8b2b3d6e327db0aaf9bd788e4acec02b4f";
-const redirectUri = AuthSession.makeRedirectUri({ useProxy: true });
+import React, { useState } from "react";
+import { View, Text, Button, ActivityIndicator, StyleSheet } from "react-native";
+import { useTheme } from "../hooks/ThemeContext"; // Hook para el tema
+import { Colors } from "@/constants/Colors"; // Colores del tema
+import { useNavigation } from "expo-router"; // Usamos navegación para redirigir
 
-const HomeScreen = () => {
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  const navigation = useNavigation();  // Hook para obtener el objeto de navegación
+export default function LoginScreen() {
+  const [isLoading, setIsLoading] = useState(false);
+  const { theme } = useTheme();
+  const navigation = useNavigation();
 
-  const [request, response, promptAsync] = AuthSession.useAuthRequest(
-    {
-      clientId,
-      redirectUri,
-      responseType: "code",
-      scopes: ["activity:read"],
-    },
-    { authorizationEndpoint: "https://www.strava.com/oauth/authorize" }
-  );
+  const handleMockLogin = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      navigation.replace("/(tabs)/profile"); // Redirige a la pantalla de perfil
+    }, 2000); // Simula un login por 2 segundos
+  };
 
-  useEffect(() => {
-    if (response?.type === "success") {
-      const code = response.params.code;
-      console.log("Código recibido:", code);
-
-      exchangeCodeForToken(code)
-        .then((token) => {
-          setAccessToken(token);
-          console.log("Autenticación exitosa. Token:", token);
-          
-          // Aquí rediriges a la pantalla inicial o cierras el modal
-          navigation.navigate('/explore');  // Cambia 'Home' por el nombre de tu pantalla inicial
-        })
-        .catch((error) => {
-          console.error("Error en el intercambio del token:", error);
-          Alert.alert("Error", "No se pudo completar la autenticación.");
-        });
-    }
-  }, [response, navigation]);  // Añadir navigation a las dependencias
-
-  const exchangeCodeForToken = async (code: string): Promise<string> => {
-    try {
-      const response = await fetch("https://www.strava.com/oauth/token", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams({
-          client_id: clientId,
-          client_secret: clientSecret,
-          code,
-          grant_type: "authorization_code",
-        }).toString(),
-      });
-
-      const data = await response.json();
-      if (data.access_token) {
-        return data.access_token;
-      } else {
-        throw new Error(data.message || "Error al obtener el token.");
-      }
-    } catch (error) {
-      console.error("Error en la solicitud del token:", error);
-      throw error;
-    }
+  const handleRealLogin = () => {
+    console.log("Iniciando autenticación real...");
+    // Aquí puedes integrar el proceso real de autenticación
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      {!accessToken ? (
-        <Button
-          title="...................."
-          onPress={() => {
-            console.log("Iniciando autenticación...");
-            promptAsync();
-          }}
-        />
+    <View style={[styles.container, { backgroundColor: Colors[theme].background }]}>
+      <Text style={[styles.title, { color: Colors[theme].text }]}>
+        ¡Bienvenido! Elige cómo iniciar sesión
+      </Text>
+      {isLoading ? (
+        <ActivityIndicator size="large" color={Colors[theme].tint} />
       ) : (
-        <Text>Autenticado correctamente. Token: {accessToken}</Text>
+        <>
+          <Button title="Log In (Mock)" onPress={handleMockLogin} />
+          <Text style={[styles.smallText, { color: Colors[theme].text }]}>mockup</Text>
+
+          <Button title="Log In (Real)" onPress={handleRealLogin} />
+        </>
       )}
     </View>
   );
-};
+}
 
-export default HomeScreen;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  smallText: {
+    fontSize: 12,
+    marginTop: 5,
+  },
+});

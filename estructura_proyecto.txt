@@ -2,6 +2,13 @@ vert-run\
 |   .expo\
 |   |   types\
 |   |   |   - router.d.ts
+|   |   web\
+|   |   |   cache\
+|   |   |   |   production\
+|   |   |   |   |   images\
+|   |   |   |   |   |   favicon\
+|   |   |   |   |   |   |   favicon-24272cdaeff82cc5facdaccd982a6f05b60c4504704bbf94c19a6388659880bb-contain-transparent\
+|   |   |   |   |   |   |   |   - favicon-48.png
 |   |   - devices.json
 |   |   - README.md
 |   |   - settings.json
@@ -11,8 +18,10 @@ vert-run\
 |   |   |   - index.tsx
 |   |   |   - _layout.tsx
 |   |   auth\
-|   |   |   - Auth.tsx
 |   |   |   - authService.ts
+|   |   json\
+|   |   |   - athletes.json
+|   |   |   - athletes_id_stats.json
 |   |   - +not-found.tsx
 |   |   - _layout.tsx
 |   assets\
@@ -59,5 +68,6 @@ vert-run\
 |   - expo-env.d.ts
 |   - package-lock.json
 |   - package.json
+|   - proyecto.txt
 |   - README.md
 |   - tsconfig.json
