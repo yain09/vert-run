@@ -1,26 +1,33 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
+// Colores comunes para ambos temas
+const activeOpacity = 0.8;
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+const accentColorLight = "#4d256e";
+const accentColorDark = "#d90b75";
 
+const textColorLight = "#121212";
+const textColorDark = "#fff";
+
+// Colores por tema
 export const Colors = {
   light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
+    primary: accentColorLight,
+    background: "#ffffff",
+    text: textColorLight,
+    tabBarActiveTintColor: accentColorLight, // Nombre más claro
+    tabBarInactiveTintColor: "#888888", // Nombre más claro
+    hover: accentColorLight,
+    cardBackground: "#ddd",
+    sportIcons: "#000000",
   },
+
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
+    primary: accentColorDark,
+    background: "#000",
+    text: textColorDark,
+    tabBarActiveTintColor: accentColorDark, // Nombre más claro
+    tabBarInactiveTintColor: "#AAAAAA", // Nombre más claro
+    hover: accentColorDark,
+    cardBackground: "#222",
+    sportIcons: "#ffffff",
   },
 };

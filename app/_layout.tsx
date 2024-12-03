@@ -1,39 +1,32 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+// Archivo: app/_layout.tsx
 
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+import React from "react";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { ThemeProvider, useTheme } from "./hooks/ThemeContext"; // Asegúrate de importar el ThemeProvider
+import { Colors } from "@/constants/Colors"; // Para manejar los colores según el tema
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
+    <ThemeProvider> {/* Asegúrate de envolver toda la aplicación con el ThemeProvider */}
+      <ThemeContent />
     </ThemeProvider>
   );
 }
+
+const ThemeContent = () => {
+  const { theme } = useTheme(); // Obtener el tema actual
+
+  return (
+    <>
+      <StatusBar
+        style={theme === "dark" ? "light" : "dark"} // Cambiar el color del texto en función del tema
+        backgroundColor={Colors[theme].background}  // Fondo de la barra de estado según el tema
+      />
+      <Stack screenOptions={{ headerShown: false }} style={{ flex: 1 }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="(tabs)" />
+      </Stack>
+    </>
+  );
+};

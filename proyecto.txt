@@ -1,0 +1,896 @@
+app\
+|   (tabs)\
+|   |   - activities.tsx
+|   |   - monthly-stats.tsx
+|   |   - profile.tsx
+|   |   - _layout.tsx
+|   auth\
+|   |   - authService.ts
+|   components\
+|   |   - Cards.tsx
+|   |   - LogoSVG.tsx
+|   hooks\
+|   |   - ThemeContext.tsx
+|   json\
+|   |   - athletes.json
+|   |   - athletes_id_stats.json
+|   - +not-found.tsx
+|   - index.tsx
+|   - start-screen.tsx
+|   - _layout.tsx
+
+Contenido de C:\Dev\vert-run\app\(tabs)\activities.tsx:
+// Archivo: app/(tabs)/activities.tsx
+
+import React from "react";
+import { FlatList, View, Text, StyleSheet } from "react-native";
+import { useTheme } from "../hooks/ThemeContext";
+import { Colors } from "@/constants/Colors"; // Colores del tema
+
+const mockActivities = [
+  { id: 1, name: "Morning Ride", date: "2024-12-01", distance: "10.5 km" },
+  { id: 2, name: "Evening Run", date: "2024-12-01", distance: "5.2 km" },
+];
+
+const ActivitiesScreen = () => {
+  const { theme } = useTheme();
+
+  return (
+    <View style={[styles.container, { backgroundColor: Colors[theme].background }]}>
+      <FlatList
+        data={mockActivities}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <View style={[styles.card, { backgroundColor: Colors[theme].cardBackground }]}>
+            <Text style={[styles.title, { color: Colors[theme].text }]}>{item.name}</Text>
+            <Text style={[styles.text, { color: Colors[theme].text }]}>
+              Date: {item.date}
+            </Text>
+            <Text style={[styles.text, { color: Colors[theme].text }]}>
+              Distance: {item.distance}
+            </Text>
+          </View>
+        )}
+      />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+  },
+  card: {
+    borderRadius: 8,
+    padding: 15,
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  text: {
+    fontSize: 14,
+  },
+});
+
+export default ActivitiesScreen;
+
+
+Contenido de C:\Dev\vert-run\app\(tabs)\monthly-stats.tsx:
+// Archivo: app/(tabs)/monthly-stats.tsx
+
+import React from "react";
+import { FlatList, View, StyleSheet } from "react-native";
+import Card from "../components/Cards";
+import { useTheme } from "../hooks/ThemeContext"; // Usamos useTheme en lugar de useColorScheme
+import { Colors } from "@/constants/Colors"; // Para los colores del tema
+
+const mockStats = [
+  {
+    id: 1,
+    month: "November",
+    distance: "120 km",
+    time: "6 hrs",
+    elevationGain: "500 m",
+  },
+  {
+    id: 2,
+    month: "October",
+    distance: "90 km",
+    time: "4.5 hrs",
+    elevationGain: "300 m",
+  },
+  {
+    id: 3,
+    month: "September",
+    distance: "100 km",
+    time: "5 hrs",
+    elevationGain: "400 m",
+  },
+];
+
+const MonthlyStatsScreen = () => {
+  const { theme } = useTheme(); // Accedemos al tema usando useTheme
+
+  return (
+    <View style={[styles.container, { backgroundColor: Colors[theme].backgroundBody }]}> {/* Aplica el fondo del cuerpo según el tema */}
+      <FlatList
+        data={mockStats}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <Card
+            title={item.month}
+            content={[
+              `Total Distance: ${item.distance}`,
+              `Total Time: ${item.time}`,
+              `Total Elevation Gain: ${item.elevationGain}`,
+            ]}
+          />
+        )}
+      />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+  },
+});
+
+export default MonthlyStatsScreen;
+
+
+Contenido de C:\Dev\vert-run\app\(tabs)\profile.tsx:
+// Archivo: app/(tabs)/profile.tsx
+
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
+import { Colors } from "@/constants/Colors"; // Para los colores del tema
+import { useTheme } from "../hooks/ThemeContext"; // Para obtener el tema actual
+import athletesData from "../json/athletes.json"; // Cargamos los datos del archivo JSON
+
+const ProfileScreen = () => {
+  const { theme } = useTheme(); // Obtener el tema actual
+  const { firstname, lastname, weight, city, state } = athletesData; // Desestructuramos la info de "athletes.json"
+
+  return (
+    <View style={[styles.container, { backgroundColor: Colors[theme].backgroundBody }]}>
+      <Text style={[styles.title, { color: Colors[theme].text }]}>
+        Perfil de {firstname} {lastname}
+      </Text>
+      <Text style={[styles.text, { color: Colors[theme].text }]}>Ciudad: {city}, {state}</Text>
+      <Text style={[styles.text, { color: Colors[theme].text }]}>Peso: {weight} kg</Text>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  text: {
+    fontSize: 18,
+    marginBottom: 5,
+  },
+});
+
+export default ProfileScreen;
+
+
+Contenido de C:\Dev\vert-run\app\(tabs)\_layout.tsx:
+// Archivo: app/(tabs)/_layout.tsx
+
+import React from "react";
+import { View, Switch, StyleSheet, SafeAreaView } from "react-native";
+import { Tabs } from "expo-router";
+import { useTheme } from "../hooks/ThemeContext"; // Usamos useTheme para obtener el tema actual
+import { IconSymbol } from "@/components/ui/IconSymbol"; // Importa IconSymbol
+import { Colors } from "@/constants/Colors"; // Para los colores del tema
+import LogoSVG from "../components/LogoSVG"; // Importa tu componente SVG
+
+export default function TabLayout() {
+  const { theme, toggleTheme } = useTheme(); // Accedemos al tema y la función toggle
+
+  const handleThemeToggle = () => {
+    toggleTheme(); // Cambiar el tema al hacer clic en el Switch
+    console.log("Tema cambiado a:", theme === "dark" ? "light" : "dark");
+  };
+
+  return (
+    <>
+      {/* Header con el texto dinámico del título de la pantalla y el Switch */}
+      <View
+        style={[
+          styles.headerContainer,
+          { backgroundColor: Colors[theme].background },
+        ]}
+      >
+        <LogoSVG />
+
+        <Switch
+          value={theme === "dark"}
+          onValueChange={handleThemeToggle}
+          thumbColor={theme === "dark" ? "#FFFFFF" : "#000000"}
+          trackColor={{
+            false: "#B0B0B0", // Color gris cuando está desactivado
+            true: theme === "dark" ? "#B0B0B0" : "#009688", // Color cuando está activado
+          }}
+        />
+      </View>
+
+      {/* Cuerpo de la web con fondo dinámico */}
+      <SafeAreaView
+        style={[
+          styles.bodyContainer,
+          { backgroundColor: Colors[theme].backgroundBody },
+        ]}
+      >
+        <Tabs
+          screenOptions={{
+            tabBarActiveTintColor: Colors[theme].tint,
+            headerShown: false, // No queremos mostrar el header en las Tabs
+          }}
+        >
+          <Tabs.Screen
+            name="activities"
+            options={{
+              tabBarIcon: ({ color }) => (
+                <IconSymbol size={24} name="bicycle" color={color} />
+              ),
+              tabBarOnPress: () => setHeaderText("Activities"),
+            }}
+          />
+          <Tabs.Screen
+            name="monthly-stats"
+            options={{
+              tabBarIcon: ({ color }) => (
+                <IconSymbol size={24} name="chart.bar" color={color} />
+              ),
+              tabBarOnPress: () => setHeaderText("Monthly Stats"),
+            }}
+          />
+          {/* Nueva pestaña para el perfil */}
+          <Tabs.Screen
+            name="profile"
+            options={{
+              title: "Perfil",
+              tabBarIcon: ({ color }) => (
+                <IconSymbol size={24} name="person" color={color} />
+              ),
+            }}
+          />
+        </Tabs>
+      </SafeAreaView>
+    </>
+  );
+}
+
+const styles = StyleSheet.create({
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 10,
+    width: "100%",
+   
+  },
+  headerText: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  bodyContainer: {
+    flex: 1,
+    padding: 10,
+  },
+});
+
+
+Contenido de C:\Dev\vert-run\app\auth\authService.ts:
+// Archivo: app/auth/authService.ts
+
+import axios from 'axios';
+
+export const loginWithStrava = async (code: string) => {
+  const clientId = '141567';  // Tu client_id de Strava
+  const clientSecret = '398a1d8b2b3d6e327db0aaf9bd788e4acec02b4f';  // Tu client_secret de Strava
+  const redirectUri = AuthSession.makeRedirectUri({ useProxy: true }); // La misma URI de redirección
+
+  try {
+    const response = await axios.post('https://www.strava.com/oauth/token', {
+      client_id: clientId,
+      client_secret: clientSecret,
+      code: code,
+      grant_type: 'authorization_code',
+      redirect_uri: redirectUri,
+    });
+
+    if (response.data.access_token) {
+      return response.data.access_token; // Devuelve el token de acceso
+    } else {
+      throw new Error('No se recibió el token de acceso');
+    }
+  } catch (error) {
+    console.error("Error durante la solicitud de token:", error);
+    throw error;
+  }
+};
+
+
+Contenido de C:\Dev\vert-run\app\components\Cards.tsx:
+// Archivo: app/components/Cards.tsx
+
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
+import { useTheme } from "../hooks/ThemeContext"; // Usamos useTheme en lugar de useColorScheme
+import { Colors } from "@/constants/Colors"; // Para los colores del tema
+
+type CardProps = {
+  title: string;
+  content: string[];
+};
+
+const Card: React.FC<CardProps> = ({ title, content }) => {
+  const { theme } = useTheme(); // Accedemos al tema usando useTheme
+
+  return (
+    <View style={[styles.card, { backgroundColor: Colors[theme].cardBackground }]}>  {/* Usamos theme.cardBackground para el fondo de las tarjetas */}
+      <Text style={[styles.title, { color: Colors[theme].text }]}>{title}</Text>  {/* Usamos theme.text para el texto */}
+      {content.map((line, index) => (
+        <Text key={index} style={[styles.text, { color: Colors[theme].text }]}>{line}</Text>  
+        /* Aplicamos el color de texto */
+      ))}
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  card: {
+    borderRadius: 8,
+    padding: 15,
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2, // Esto crea la sombra para las tarjetas
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  text: {
+    fontSize: 14,
+  },
+});
+
+export default Card;
+
+
+Contenido de C:\Dev\vert-run\app\components\LogoSVG.tsx:
+// Archivo: app/components/LogoSVG.tsx
+import React from "react";
+import Svg, { Path, Polygon } from "react-native-svg";
+import { useTheme } from "../hooks/ThemeContext"; // Usamos el hook para obtener el tema actual
+
+const LogoSVG = () => {
+  const { theme } = useTheme(); // Obtener el tema actual (dark o light)
+  const fillColor = theme === "dark" ? "#FFFFFF" : "#000000"; // Define el color de relleno dependiendo del tema
+
+  return (
+    <Svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 3042.7 1322.9"
+      width={70}
+      height={50}
+    >
+      <Polygon
+        fill={fillColor}
+        id="V"
+        points="253.81,560.86 32.87,26.44 162.83,26.44 305.57,398.62 431.09,26.44 571.38,26.44 347.47,560.86 "
+      />
+      <Polygon
+        fill={fillColor}
+        id="E"
+        points="854.14,561.21 854.14,27.09 1159.98,27.09 1159.98,133.33 974.63,133.33 974.63,242.1 1149.65,242.1 1149.65,348.42 974.63,348.42 974.63,455.74 1159.98,455.74 1159.98,561.21 "
+      />
+      <Path
+        fill={fillColor}
+        id="R"
+        d="M1492.08 560.86l0 -533.91 128.18 0c59.49,0 93.51,2.74 116.91,8.22 77.04,18.03 120.47,78.92 120.47,158.05 0,70.62 -41.46,129.71 -111.93,145.02l183.84 222.62 -152.94 0 -163.57 -209.08 0 209.08 -120.96 0zm121.26 -296.57l26.89 0c31.36,0 54.26,-5.35 68.69,-16.06 14.44,-10.7 21.66,-27.5 21.66,-50.28 0,-26.75 -6.7,-45.83 -20.16,-57.12 -13.54,-11.36 -36.1,-16.93 -67.95,-16.93l-29.13 0 0 140.39z"
+      />
+      <Polygon
+        fill={fillColor}
+        id="T"
+        points="2311.43,560.42 2311.43,134.17 2184.32,134.17 2184.32,26.59 2559.83,26.59 2559.83,134.17 2433.28,134.17 2433.28,560.42 "
+      />
+      <Path
+        fill={fillColor}
+        id="punto"
+        d="M2866.19 500.22c0,-20.18 6.8,-37.07 20.53,-50.8 13.62,-13.73 30.51,-20.66 50.8,-20.66 20.66,0 37.8,6.93 51.65,20.66 13.73,13.73 20.66,30.62 20.66,50.8 0,20.17 -6.93,37.18 -20.9,51.16 -13.86,13.98 -30.99,21.02 -51.41,21.02 -20.05,0 -36.82,-7.04 -50.67,-21.02 -13.74,-13.98 -20.66,-30.99 -20.66,-51.16z"
+      />
+      <Path
+        fill={fillColor}
+        id="R2"
+        d="M586.15 1288.4l0 -533.91 128.18 0c59.49,0 93.51,2.74 116.9,8.22 77.04,18.02 120.48,78.92 120.48,158.05 0,70.62 -41.47,129.71 -111.93,145.02l183.84 222.62 -152.95 0 -163.56 -209.08 0 209.08 -120.96 0zm121.26 -296.57l26.88 0c31.37,0 54.26,-5.35 68.7,-16.06 14.44,-10.7 21.66,-27.5 21.66,-50.28 0,-26.75 -6.7,-45.83 -20.17,-57.12 -13.53,-11.36 -36.09,-16.93 -67.95,-16.93l-29.12 0 0 140.39z"
+      />
+
+      <Path
+        fill={fillColor}
+        id="U"
+        d="M1306.13 755.76l119.11 0 1.01 318.9c0.23,72.44 30.37,103.37 82.98,103.37 52.61,0 82.75,-30.93 82.98,-103.37l1.01 -318.9 119.11 0 0.49 360.13c0.17,120.88 -86.31,180.48 -203.59,180.57 -117.28,-0.09 -203.75,-59.69 -203.59,-180.57l0.49 -360.13z"
+      />
+      <Polygon
+        fill={fillColor}
+        id="N"
+        points="2055.4,1288.1 2055.4,754.49 2172.46,754.49 2386.67,1076.05 2386.67,754.49 2512.5,754.49 2512.5,1288.1 2386.67,1288.1 2172.46,953.01 2172.46,1288.1 "
+      />
+    </Svg>
+  );
+};
+export default LogoSVG;
+
+
+Contenido de C:\Dev\vert-run\app\hooks\ThemeContext.tsx:
+// app/hooks/ThemeContext.tsx
+
+import React, { createContext, useContext, useState, ReactNode } from 'react';
+
+const ThemeContext = createContext(null);
+
+export const ThemeProvider = ({ children }: { children: ReactNode }) => {
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  const toggleTheme = () => {
+    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
+  };
+
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error("useTheme must be used within a ThemeProvider");
+  }
+  return context;
+};
+
+export default ThemeContext;
+
+
+Contenido de C:\Dev\vert-run\app\json\athletes.json:
+{
+  "id": 38560594,
+  "username": "yan_godoy",
+  "resource_state": 2,
+  "firstname": "Yaín",
+  "lastname": "Godoy",
+  "bio": "",
+  "city": "Santa Fe",
+  "state": "Santa Fe",
+  "country": null,
+  "sex": "M",
+  "premium": false,
+  "summit": false,
+  "created_at": "2019-01-21T18:02:41Z",
+  "updated_at": "2024-12-01T19:42:35Z",
+  "badge_type_id": 0,
+  "weight": 85,
+  "profile_medium": "https://graph.facebook.com/10157017164703466/picture?height=256&width=256",
+  "profile": "https://graph.facebook.com/10157017164703466/picture?height=256&width=256",
+  "friend": null,
+  "follower": null
+}
+
+
+Contenido de C:\Dev\vert-run\app\json\athletes_id_stats.json:
+{
+  "biggest_ride_distance": 11778.4,
+  "biggest_climb_elevation_gain": 7.299999999999997,
+  "recent_ride_totals": {
+    "count": 0,
+    "distance": 0,
+    "moving_time": 0,
+    "elapsed_time": 0,
+    "elevation_gain": 0,
+    "achievement_count": 0
+  },
+  "all_ride_totals": {
+    "count": 1,
+    "distance": 11778.400390625,
+    "moving_time": 2176,
+    "elapsed_time": 2488,
+    "elevation_gain": 82.92306518554688
+  },
+  "recent_run_totals": {
+    "count": 0,
+    "distance": 0,
+    "moving_time": 0,
+    "elapsed_time": 0,
+    "elevation_gain": 0,
+    "achievement_count": 0
+  },
+  "all_run_totals": {
+    "count": 0,
+    "distance": 0,
+    "moving_time": 0,
+    "elapsed_time": 0,
+    "elevation_gain": 0
+  },
+  "recent_swim_totals": {
+    "count": 0,
+    "distance": 0,
+    "moving_time": 0,
+    "elapsed_time": 0,
+    "elevation_gain": 0,
+    "achievement_count": 0
+  },
+  "all_swim_totals": {
+    "count": 0,
+    "distance": 0,
+    "moving_time": 0,
+    "elapsed_time": 0,
+    "elevation_gain": 0
+  },
+  "ytd_ride_totals": {
+    "count": 0,
+    "distance": 0,
+    "moving_time": 0,
+    "elapsed_time": 0,
+    "elevation_gain": 0
+  },
+  "ytd_run_totals": {
+    "count": 0,
+    "distance": 0,
+    "moving_time": 0,
+    "elapsed_time": 0,
+    "elevation_gain": 0
+  },
+  "ytd_swim_totals": {
+    "count": 0,
+    "distance": 0,
+    "moving_time": 0,
+    "elapsed_time": 0,
+    "elevation_gain": 0
+  }
+}
+
+
+Contenido de C:\Dev\vert-run\app\+not-found.tsx:
+import { Link, Stack } from 'expo-router';
+import { StyleSheet } from 'react-native';
+
+import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/components/ThemedView';
+
+export default function NotFoundScreen() {
+  return (
+    <>
+      <Stack.Screen options={{ title: 'Oops!' }} />
+      <ThemedView style={styles.container}>
+        <ThemedText type="title">This screen doesn't exist.</ThemedText>
+        <Link href="/" style={styles.link}>
+          <ThemedText type="link">Go to home screen!</ThemedText>
+        </Link>
+      </ThemedView>
+    </>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  link: {
+    marginTop: 15,
+    paddingVertical: 15,
+  },
+});
+
+
+Contenido de C:\Dev\vert-run\app\index.tsx:
+// Archivo: app/index.tsx
+
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  Button,
+  Alert,
+  ActivityIndicator,
+  StyleSheet,
+  Image,
+} from "react-native";
+import { useTheme } from "./hooks/ThemeContext";
+import { Colors } from "@/constants/Colors";
+import * as AuthSession from "expo-auth-session";
+import { Link, useRouter, useNavigation  } from "expo-router";
+import LogoSVG from "./components/LogoSVG";
+
+const clientId = "141567";
+const clientSecret = "398a1d8b2b3d6e327db0aaf9bd788e4acec02b4f";
+const redirectUri = AuthSession.makeRedirectUri({ useProxy: true });
+
+export default function index() {
+
+  const [isLoading, setIsLoading] = useState(false);
+  const { theme } = useTheme();
+  const navigation = useNavigation();
+
+  const handleMockLogin = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      navigation.replace("/(tabs)/profile"); // Redirige a la pantalla de perfil();
+    }, 2000);
+  };
+
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+
+  const [request, response, promptAsync] = AuthSession.useAuthRequest(
+    {
+      clientId,
+      redirectUri,
+      responseType: "code",
+      scopes: ["activity:read"],
+    },
+    { authorizationEndpoint: "https://www.strava.com/oauth/authorize" }
+  );
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (response?.type === "success") {
+      const code = response.params.code;
+      console.log("Código recibido:", code);
+
+      exchangeCodeForToken(code)
+        .then((token) => {
+          setAccessToken(token);
+          console.log("Autenticación exitosa. Token:", token);
+
+          // Redirige a la pantalla deseada
+          router.push({ pathname: "/(tabs)/profile"});
+        })
+        .catch((error) => {
+          console.error("Error en el intercambio del token:", error);
+          Alert.alert("Error", "No se pudo completar la autenticación.");
+        });
+    }
+  }, [response]); // Dependencia ajustada
+
+
+  const exchangeCodeForToken = async (code: string): Promise<string> => {
+    try {
+      const response = await fetch("https://www.strava.com/oauth/token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          client_id: clientId,
+          client_secret: clientSecret,
+          code,
+          grant_type: "authorization_code",
+        }).toString(),
+      });
+
+      const data = await response.json();
+      if (data.access_token) {
+        return data.access_token;
+      } else {
+        throw new Error(data.message || "Error al obtener el token.");
+      }
+    } catch (error) {
+      console.error("Error en la solicitud del token:", error);
+      throw error;
+    }
+  };
+
+  const handleRealLogin = () => {
+    // Aquí irá tu lógica de login real con Strava
+    console.log("Iniciando autenticación real...");
+  };
+
+  return (
+    <View
+      style={[styles.container, { backgroundColor: Colors[theme].background }]}
+    >
+      <View style={styles.logoContainer}>
+        <LogoSVG />
+      </View>
+
+      <Text style={[styles.title, { color: Colors[theme].text }]}>
+        ¡Bienvenido a VertRun!
+      </Text>
+      <Text style={[styles.subtitle, { color: Colors[theme].text }]}>
+        Elige cómo iniciar sesión
+      </Text>
+
+      {isLoading ? (
+        <ActivityIndicator size="large" color={Colors[theme].tint} />
+      ) : (
+        <View style={styles.buttonContainer}>
+          <Link href="/(tabs)/profile">
+            <Button title="Log In (Mock)" onPress={handleMockLogin} />
+          </Link>
+          <Text style={[styles.smallText, { color: Colors[theme].text }]}>
+            Para pruebas
+          </Text>
+          <Button
+            title="Log In con Strava"
+            onPress={() => {
+              console.log("Iniciando autenticación...");
+              promptAsync();
+            }}
+          />
+
+          {/* <Button title="Log In con Strava" onPress={handleRealLogin} /> */}
+          <Text style={[styles.smallText, { color: Colors[theme].text }]}>
+            Autenticación oficial
+          </Text>
+        </View>
+      )}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  logoContainer: {
+    marginBottom: 30,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 18,
+    marginBottom: 30,
+    textAlign: "center",
+  },
+  buttonContainer: {
+    width: "100%",
+    alignItems: "center",
+  },
+  smallText: {
+    fontSize: 12,
+    marginTop: 5,
+    marginBottom: 15,
+  },
+});
+
+
+Contenido de C:\Dev\vert-run\app\start-screen.tsx:
+// Archivo: app/start-screen.tsx
+
+import React, { useState } from "react";
+import { View, Text, Button, ActivityIndicator, StyleSheet, Image } from "react-native";
+import { useTheme } from "./hooks/ThemeContext";
+import { Colors } from "@/constants/Colors";
+import { useNavigation } from "expo-router";
+import LogoSVG from "./components/LogoSVG";
+
+export default function StartScreen() {
+  const [isLoading, setIsLoading] = useState(false);
+  const { theme } = useTheme();
+  const navigation = useNavigation();
+
+  const handleMockLogin = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      navigation.replace("/(tabs)/profile");
+    }, 2000);
+  };
+
+  const handleRealLogin = () => {
+    // Aquí irá tu lógica de login real con Strava
+    console.log("Iniciando autenticación real...");
+  };
+
+  return (
+    <View style={[styles.container, { backgroundColor: Colors[theme].background }]}>
+      <View style={styles.logoContainer}>
+        <LogoSVG />
+      </View>
+      
+      <Text style={[styles.title, { color: Colors[theme].text }]}>¡Bienvenido a VertRun!</Text>
+      <Text style={[styles.subtitle, { color: Colors[theme].text }]}>
+        Elige cómo iniciar sesión
+      </Text>
+      
+      {isLoading ? (
+        <ActivityIndicator size="large" color={Colors[theme].tint} />
+      ) : (
+        <View style={styles.buttonContainer}>
+          <Button title="Log In (Mock)" onPress={handleMockLogin} />
+          <Text style={[styles.smallText, { color: Colors[theme].text }]}>Para pruebas</Text>
+
+          <Button title="Log In con Strava" onPress={handleRealLogin} />
+          <Text style={[styles.smallText, { color: Colors[theme].text }]}>Autenticación oficial</Text>
+        </View>
+      )}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  logoContainer: {
+    marginBottom: 30,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 18,
+    marginBottom: 30,
+    textAlign: 'center'
+  },
+  buttonContainer: {
+    width: '100%',
+    alignItems: 'center'
+  },
+  smallText: {
+    fontSize: 12,
+    marginTop: 5,
+    marginBottom: 15,
+  },
+});
+
+
+Contenido de C:\Dev\vert-run\app\_layout.tsx:
+// Archivo: app/_layout.tsx
+
+import React from "react";
+import { Stack } from "expo-router";
+import { ThemeProvider } from "./hooks/ThemeContext";
+
+export default function RootLayout() {
+  return (
+    <ThemeProvider>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="(tabs)" />
+      </Stack>
+    </ThemeProvider>
+  );
+}
+

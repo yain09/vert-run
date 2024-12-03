@@ -1,0 +1,22 @@
+{
+  "id": 38560594,
+  "username": "yan_godoy",
+  "resource_state": 2,
+  "firstname": "Yaín",
+  "lastname": "Godoy",
+  "bio": "",
+  "city": "Santa Fe",
+  "state": "Santa Fe",
+  "country": null,
+  "sex": "M",
+  "premium": false,
+  "summit": false,
+  "created_at": "2019-01-21T18:02:41Z",
+  "updated_at": "2024-12-01T19:42:35Z",
+  "badge_type_id": 0,
+  "weight": 85,
+  "profile_medium": "https://graph.facebook.com/10157017164703466/picture?height=256&width=256",
+  "profile": "https://graph.facebook.com/10157017164703466/picture?height=256&width=256",
+  "friend": null,
+  "follower": null
+}
